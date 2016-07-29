@@ -1,14 +1,126 @@
 import argparse
 import sys
 import location
+import status
+import api
+import requests
 
-def restart_process():
-    return 1
+from POGOProtos.Networking.Requests import Request_pb2
+from POGOProtos.Networking.Requests import RequestType_pb2
+from POGOProtos.Networking.Envelopes import ResponseEnvelope_pb2
+from POGOProtos.Networking.Envelopes import RequestEnvelope_pb2
+from POGOProtos.Networking.Requests.Messages import EncounterMessage_pb2
+from POGOProtos.Networking.Requests.Messages import FortSearchMessage_pb2
+from POGOProtos.Networking.Requests.Messages import FortDetailsMessage_pb2
+from POGOProtos.Networking.Requests.Messages import CatchPokemonMessage_pb2
+from POGOProtos.Networking.Requests.Messages import GetInventoryMessage_pb2
+from POGOProtos.Networking.Requests.Messages import GetMapObjectsMessage_pb2
+from POGOProtos.Networking.Requests.Messages import EvolvePokemonMessage_pb2
+from POGOProtos.Networking.Requests.Messages import ReleasePokemonMessage_pb2
+from POGOProtos.Networking.Requests.Messages import UseItemCaptureMessage_pb2
+from POGOProtos.Networking.Requests.Messages import DownloadSettingsMessage_pb2
+from POGOProtos.Networking.Requests.Messages import UseItemEggIncubatorMessage_pb2
+from POGOProtos.Networking.Requests.Messages import RecycleInventoryItemMessage_pb2
+from POGOProtos.Networking.Requests.Messages import NicknamePokemonMessage_pb2
+
+API_URL = 'https://pgorelease.nianticlabs.com/plfe/rpc'
 
 
-def start_process(token, location_name=""):
-    loca = location.Location()
-    loca.set_location_name(location_name);
-    print('[SE]\tGoogle token: '+ token[:40])
+class Service:
+    def __init__(self, token=None, location_name=""):
+        self.access_token = token
+        self.origin_location = location_name
+        self.authTicket = None
+        self.session = None
+        self.start_process(token, location_name)
+
+    def restart_process(self):
+        return 1
+
+
+    def start_process(self, token, location_name=""):
+        self.location = location.Location()
+        self.location.set_location_name(location_name);     # Get Location at here
+        print('[SE]\tGoogle token: '+ token[:40])
+
+        state = status.Status() 
+        self.endpoint = 'https://{0}{1}'.format(self.createApiEndpoint(),'/rpc')
+
+        payload = [Request_pb2.Request(request_type = RequestType_pb2.GET_PLAYER)]
+        res = self.wrap_and_request() 
+
+    def createApiEndpoint(self):
+        payload = []
+        msg = Request_pb2.Request(request_type = RequestType_pb2.GET_PLAYER)
+        payload.append(msg)
+        req = self.wrap_in_request(payload)
+        res = self.request(req, API_URL)
+        if res is None:
+            print("Servers are busy now. Exiting")
+            sys.exit("Can't connect to server in creating api endpoint, Error 51263")
+        return res.api_url
     
+    def wrap_in_request(self, payload):
+        if not self.authTicket:
+            info = RequestEnvelope_pb2.RequestEnvelope.AuthInfo(
+                    provider = "google",
+                    token = RequestEnvelope_pb2.RequestEnvelope.AuthInfo.JWT(
+                        contents = self.access_token,
+                        unknown2 = 59
+                        )
+                    )
+        # Build Envelpe
+        # TODO -> This parts need new method to fix multiple authentication
+        req = RequestEnvelope_pb2.RequestEnvelope(
+                status_code = 2,
+                request_id = api.get_RPC_ID(),
+                longitude = self.location.lon,
+                latitude = self.location.lat,
+                altitude = self.location.alt,
+                auth_ticket = self.authTicket,
+                unknown12 = 989,
+                auth_info = info
+                )
+    
+        data = [None, ] * 4
+        data[0] = Request_pb2.Request(
+                request_type = RequestType_pb2.GET_HATCHED_EGGS
+                )
+        data[1] = Request_pb2.Request(
+                request_type = RequestType_pb2.GET_INVENTORY,
+                request_message = GetInventoryMessage_pb2.GetInventoryMessage(
+                    last_timestamp_ms = 0
+                    ).SerializeToString()
+                )
+        data[2] = Request_pb2.Request(
+                request_type = RequestType_pb2.CHECK_AWARDED_BADGES
+                )
+        data[3] = Request_pb2.Request(
+                request_type = RequestType_pb2.DOWNLOAD_SETTINGS,
+                request_message = DownloadSettingsMessage_pb2.DownloadSettingsMessage(
+                    hash="4a2e9bc330dae60e7b74fc85b98868ab4700802d"     # This should be e instead of d.
+                    ).SerializeToString()
+                )
+        payload += data
+        req.requests.extend(payload)
+        return req
 
+    def request(self, req, url=None):
+        #try:
+            if url is None:
+                url = self.endpoint
+            # Send request
+            rawResponse = self.session.post(url, data=req.SerializeToString())
+
+            res = RequestEnvelope_pb2.ResponseEnvelope()
+            res.ParseFromString(rawResponse.content)
+
+            if res.auth_ticket.start:
+                self.authTicket = res.auth_ticket
+            return res
+        #except:
+            sys.exit("Can't acquire request from server, Error 64114")
+            return 1
+
+    def wrap_and_request(self):
+        return 1

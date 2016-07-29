@@ -5,5 +5,5 @@
 4. Old friends want to play it in China.
 
 # Acknowledgement
-[Mila432](https://github.com/Mila432)/[Pokemon\_Go\_API](https://github.com/Mila432/Pokemon_Go_API)
-[AeonLucid](https://github.com/AeonLucid)/[POGOProtos](https://github.com/AeonLucid/POGOProtos)
+* [Mila432](https://github.com/Mila432)/[Pokemon\_Go\_API](https://github.com/Mila432/Pokemon_Go_API)
+* [AeonLucid](https://github.com/AeonLucid)/[POGOProtos](https://github.com/AeonLucid/POGOProtos)

@@ -51,7 +51,7 @@ def main():
     access_token = get_token(args.username, args.password)
     # print(access_token)
     if access_token is not None:
-        service.start_process(access_token, args.location)
+        serv = service.Service(access_token, args.location)
     else:
         print("This code should not be ran forever!\n")
 
