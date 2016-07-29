@@ -5,6 +5,8 @@ import sys
 import argparse
 from gpsoauth import perform_oauth, perform_master_login
 
+import service
+
 
 # Thanks to Mila432
 # TODO -> auth acquire method replacement
@@ -26,7 +28,7 @@ def google_login_auth(usr, passwd):
 
 def get_token(usr, passwd):
     token = None
-    print('[SH]\tLogin with' + usr)
+    print('[SH]\tLogin with:\t' + usr)
     token = google_login_auth(usr, passwd)
 
     return token
@@ -47,7 +49,13 @@ def main():
     if not args.password:
         args.password = getpass('Password:')
     access_token = get_token(args.username, args.password)
-    print(access_token)
+    # print(access_token)
+    if access_token is not None:
+        service.start_process(access_token, args.location)
+    else:
+        print("This code should not be ran forever!\n")
+
+
 
 
 if __name__ == '__main__':
