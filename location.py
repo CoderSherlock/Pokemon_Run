@@ -27,6 +27,12 @@ class Location:
         print('[LO]\tYou are not at '+ format(loc.address.encode('utf-8')))
         return self.set_location_cord(loc.latitude, loc.longitude, loc.altitude)
 
+    def move_to_name(self, name):
+        return 1
+
+    def move_to_cord(self, lat, lon, alt):
+        return 1
+
 
 def utils_f2i(float):
     return struct.unpack('<Q', struct.pack('<d', float))[0]

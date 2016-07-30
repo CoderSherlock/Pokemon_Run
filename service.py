@@ -4,6 +4,8 @@ import location
 import status
 import api
 import requests
+import json
+import re
 
 from POGOProtos.Networking.Requests import Request_pb2
 from POGOProtos.Networking.Requests import RequestType_pb2
@@ -43,6 +45,8 @@ class Service:
                 }
         self.session.verify = False
 
+        self.state = None
+
         self.start_process(token, location_name)
 
     def restart_process(self):
@@ -57,11 +61,15 @@ class Service:
         self.state = status.Status() 
         self.endpoint = 'https://{0}{1}'.format(self.createApiEndpoint(),'/rpc')
 
-        print("Start grab player infos")
         payload = [Request_pb2.Request(request_type = RequestType_pb2.GET_PLAYER)]
         res = self.wrap_and_request(payload) 
         self.state.profile.ParseFromString(res.returns[0])
-        print(self.state.profile)
+
+        print('[SE]\tHello, ' + self.state.profile.player_data.username)
+        # print(self.state.eggs)        # Empty
+        # print(self.state.inventory)   # Too much
+        # print(self.state.badges)      # Empty
+        # print(self.state.settings)    # Useless
 
     def createApiEndpoint(self):
         payload = []
