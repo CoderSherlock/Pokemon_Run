@@ -28,7 +28,9 @@ class Location:
         return self.set_location_cord(loc.latitude, loc.longitude, loc.altitude)
 
     def move_to_name(self, name):
-        return 1
+        geolocator = GoogleV3();
+        loc = geolocator.geocode(name)
+        return self.move_to_cord(loc.latitude, loc.longitude, loca.altitude)
 
     def move_to_cord(self, lat, lon, alt):
         return 1

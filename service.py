@@ -59,7 +59,7 @@ class Service:
         print('[SE]\tGoogle token: '+ token[:40])
 
         self.state = status.Status() 
-        self.endpoint = 'https://{0}{1}'.format(self.createApiEndpoint(),'/rpc')
+        self.endpoint = 'https://{0}{1}'.format(self.create_api_end_point(),'/rpc')
 
         payload = [Request_pb2.Request(request_type = RequestType_pb2.GET_PLAYER)]
         res = self.wrap_and_request(payload) 
@@ -71,7 +71,7 @@ class Service:
         # print(self.state.badges)      # Empty
         # print(self.state.settings)    # Useless
 
-    def createApiEndpoint(self):
+    def create_api_end_point(self):
         payload = []
         msg = Request_pb2.Request(request_type = RequestType_pb2.GET_PLAYER)
         payload.append(msg)
@@ -92,7 +92,6 @@ class Service:
                         unknown2 = 59
                         )
                     )
-            # Build Envelpe
         # TODO -> This parts need new method to fix multiple authentication
         req = RequestEnvelope_pb2.RequestEnvelope(
                 status_code = 2,
@@ -151,19 +150,17 @@ class Service:
         if res is not None:
             self.parse_default(res)
         else:
-            sys.exit("Error to get response froom server, Error 12552")
+            sys.exit("Error to get response from server, Error 12552")
         return res
 
     def parse_default(self, res):
-        #try:
-        self.state.eggs.ParseFromString(res.returns[1])
-        self.state.inventory.ParseFromString(res.returns[2])
-        self.state.badges.ParseFromString(res.returns[3])
-        self.state.settings.ParseFromString(res.returns[4])
-        #except:
-            #sys.exit("Error parsing response. Malformed response, Error 84923")
+        try:
+            self.state.eggs.ParseFromString(res.returns[1])
+            self.state.inventory.ParseFromString(res.returns[2])
+            self.state.badges.ParseFromString(res.returns[3])
+            self.state.settings.ParseFromString(res.returns[4])
+        except:
+            sys.exit("Error parsing response. Malformed response, Error 84923")
         
-        # Finally make inventory usable
         item = self.state.inventory.inventory_delta.inventory_items
-        #self.inventory = Inventory(item)
 
