@@ -6,6 +6,7 @@ import api
 import requests
 import json
 import re
+import time
 
 from POGOProtos.Networking.Requests import Request_pb2
 from POGOProtos.Networking.Requests import RequestType_pb2
@@ -70,7 +71,7 @@ class Service:
         # print(self.state.inventory)   # Too much
         # print(self.state.badges)      # Empty
         # print(self.state.settings)    # Useless
-        self.location.get_adj_cell_id()
+        self.get_map_objects()
 
     def create_api_end_point(self):
         payload = []
@@ -146,22 +147,44 @@ class Service:
             return 1
 
     def wrap_and_request(self, payload):
-        res = self.request(self.wrap_in_request(payload))
-
-        if res is not None:
-            self.parse_default(res)
-        else:
-            sys.exit("Error to get response from server, Error 12552")
+        while True:
+            try:
+                res = self.request(self.wrap_in_request(payload))
+                if res is not None:
+                    print(res)
+                    # self.parse_default(res)
+                    #self.state.eggs.ParseFromString(res.returns[1])
+                    #self.state.inventory.ParseFromString(res.returns[2])
+                    #self.state.badges.ParseFromString(res.returns[3])
+                    #self.state.settings.ParseFromString(res.returns[4])
+                    return res
+                else:
+                    sys.exit("Error to get response from server, Error 12552")
+            except:
+                print("Sleep ... 1...s")
+                time.sleep(1)
+                continue
         return res
 
     def parse_default(self, res):
-        try:
+        #try:
             self.state.eggs.ParseFromString(res.returns[1])
             self.state.inventory.ParseFromString(res.returns[2])
             self.state.badges.ParseFromString(res.returns[3])
             self.state.settings.ParseFromString(res.returns[4])
-        except:
-            sys.exit("Error parsing response. Malformed response, Error 84923")
+        #except:
+            #sys.exit("Error parsing response. Malformed response, Error 84923")
         
-        item = self.state.inventory.inventory_delta.inventory_items
+        #item = self.state.inventory.inventory_delta.inventory_items
+
+    def get_map_objects(self):
+        payload = self.location.get_objects_message()
+        
+        res = self.wrap_and_request(payload)
+        self.state.mapObjects.ParseFromString(res.returns[0])
+        print(self.state.mapObjects)
+
+        for cell in self.state.mapObjects.map_cells:
+            print(cell.wild_pokemons)
+
 

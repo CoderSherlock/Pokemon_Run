@@ -4,6 +4,9 @@ import struct
 from geopy.distance import vincenty
 from geopy.geocoders import GoogleV3
 from s2sphere import CellId, LatLng
+from POGOProtos.Networking.Requests import Request_pb2
+from POGOProtos.Networking.Requests import RequestType_pb2
+from POGOProtos.Networking.Requests.Messages import GetMapObjectsMessage_pb2
 
 class Location:
     lat = 0
@@ -18,7 +21,7 @@ class Location:
         self.lat = utils_f2i(lat)
         self.lon = utils_f2i(lon)
         self.alt = utils_f2i(alt)
-        print('[LO]\tYou are now at '+str(self.lat) +","+str(+self.lon)+","+str(self.alt))
+        print('[LO]\tYou are now at '+str(self.flat) +","+str(+self.flon)+","+str(self.alt))
         return True
 
 
@@ -36,10 +39,10 @@ class Location:
     def move_to_cord(self, lat, lon, alt):
         return 1
 
-    def get_adj_cell_id(self, radius=20):
+    def get_adj_cell_id(self, radius=5):
         start = CellId.from_lat_lng(
-                LatLng.from_degrees(self.lat,
-                    self.lon)
+                LatLng.from_degrees(self.flat,
+                    self.flon)
                 ).parent(15)
 
         ids = [start.id()]
@@ -51,8 +54,26 @@ class Location:
             nxt = nxt.next()
             prv = prv.prev()
 
-        print(ids)
+        #print(ids)
         return ids
+
+    def get_objects_message(self):
+        cells = self.get_adj_cell_id()
+        print(cells)
+        timestamps = [0, ] * len(cells)
+        payload = [Request_pb2.Request(
+            request_type = RequestType_pb2.GET_MAP_OBJECTS,
+            request_message = GetMapObjectsMessage_pb2.GetMapObjectsMessage(
+                cell_id = cells,
+                since_timestamp_ms = timestamps,
+                latitude = self.flat,
+                longitude = self.flon
+                ).SerializeToString()
+            )
+        ]
+
+        return payload
+        
 
 
 
