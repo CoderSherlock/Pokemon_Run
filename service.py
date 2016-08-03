@@ -70,6 +70,7 @@ class Service:
         # print(self.state.inventory)   # Too much
         # print(self.state.badges)      # Empty
         # print(self.state.settings)    # Useless
+        self.location.get_adj_cell_id()
 
     def create_api_end_point(self):
         payload = []

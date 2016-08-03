@@ -3,6 +3,7 @@ import math
 import struct
 from geopy.distance import vincenty
 from geopy.geocoders import GoogleV3
+from s2sphere import CellId, LatLng
 
 class Location:
     lat = 0
@@ -35,11 +36,30 @@ class Location:
     def move_to_cord(self, lat, lon, alt):
         return 1
 
+    def get_adj_cell_id(self, radius=20):
+        start = CellId.from_lat_lng(
+                LatLng.from_degrees(self.lat,
+                    self.lon)
+                ).parent(15)
+
+        ids = [start.id()]
+        nxt = start.next()
+        prv = start.prev()
+        for _ in range(radius):
+            ids.append(nxt.id())
+            ids.append(prv.id())
+            nxt = nxt.next()
+            prv = prv.prev()
+
+        print(ids)
+        return ids
+
+
 
 def utils_f2i(float):
     return struct.unpack('<Q', struct.pack('<d', float))[0]
 
 
-        
+
 
 
