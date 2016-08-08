@@ -14,16 +14,15 @@ _sym_db = _symbol_database.Default()
 
 
 from POGOProtos.Inventory.Item import ItemData_pb2 as POGOProtos_dot_Inventory_dot_Item_dot_ItemData__pb2
-from POGOProtos.Enums import PokemonId_pb2 as POGOProtos_dot_Enums_dot_PokemonId__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='POGOProtos/Data/Logs/FortSearchLogEntry.proto',
   package='POGOProtos.Data.Logs',
   syntax='proto3',
-  serialized_pb=_b('\n-POGOProtos/Data/Logs/FortSearchLogEntry.proto\x12\x14POGOProtos.Data.Logs\x1a(POGOProtos/Inventory/Item/ItemData.proto\x1a POGOProtos/Enums/PokemonId.proto\"\xca\x01\n\x12\x46ortSearchLogEntry\x12?\n\x06result\x18\x01 \x01(\x0e\x32/.POGOProtos.Data.Logs.FortSearchLogEntry.Result\x12\x0f\n\x07\x66ort_id\x18\x02 \x01(\t\x12\x32\n\x05items\x18\x03 \x03(\x0b\x32#.POGOProtos.Inventory.Item.ItemData\x12\x0c\n\x04\x65ggs\x18\x04 \x01(\x05\" \n\x06Result\x12\t\n\x05UNSET\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x62\x06proto3')
+  serialized_pb=_b('\n-POGOProtos/Data/Logs/FortSearchLogEntry.proto\x12\x14POGOProtos.Data.Logs\x1a(POGOProtos/Inventory/Item/ItemData.proto\"\xca\x01\n\x12\x46ortSearchLogEntry\x12?\n\x06result\x18\x01 \x01(\x0e\x32/.POGOProtos.Data.Logs.FortSearchLogEntry.Result\x12\x0f\n\x07\x66ort_id\x18\x02 \x01(\t\x12\x32\n\x05items\x18\x03 \x03(\x0b\x32#.POGOProtos.Inventory.Item.ItemData\x12\x0c\n\x04\x65ggs\x18\x04 \x01(\x05\" \n\x06Result\x12\t\n\x05UNSET\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x62\x06proto3')
   ,
-  dependencies=[POGOProtos_dot_Inventory_dot_Item_dot_ItemData__pb2.DESCRIPTOR,POGOProtos_dot_Enums_dot_PokemonId__pb2.DESCRIPTOR,])
+  dependencies=[POGOProtos_dot_Inventory_dot_Item_dot_ItemData__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -45,8 +44,8 @@ _FORTSEARCHLOGENTRY_RESULT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=318,
-  serialized_end=350,
+  serialized_start=284,
+  serialized_end=316,
 )
 _sym_db.RegisterEnumDescriptor(_FORTSEARCHLOGENTRY_RESULT)
 
@@ -99,8 +98,8 @@ _FORTSEARCHLOGENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=148,
-  serialized_end=350,
+  serialized_start=114,
+  serialized_end=316,
 )
 
 _FORTSEARCHLOGENTRY.fields_by_name['result'].enum_type = _FORTSEARCHLOGENTRY_RESULT

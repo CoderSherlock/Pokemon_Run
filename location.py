@@ -39,7 +39,7 @@ class Location:
     def move_to_cord(self, lat, lon, alt):
         return 1
 
-    def get_adj_cell_id(self, radius=5):
+    def get_adj_cell_id(self, radius=1):
         start = CellId.from_lat_lng(
                 LatLng.from_degrees(self.flat,
                     self.flon)
@@ -60,6 +60,7 @@ class Location:
     def get_objects_message(self):
         cells = self.get_adj_cell_id()
         print(cells)
+        print(self.flat, self.flon)
         timestamps = [0, ] * len(cells)
         payload = [Request_pb2.Request(
             request_type = RequestType_pb2.GET_MAP_OBJECTS,

@@ -26,7 +26,7 @@ from POGOProtos.Networking.Requests.Messages import UseItemEggIncubatorMessage_p
 from POGOProtos.Networking.Requests.Messages import RecycleInventoryItemMessage_pb2
 from POGOProtos.Networking.Requests.Messages import NicknamePokemonMessage_pb2
 
-API_URL = 'https://pgorelease.nianticlabs.com/plfe/rpc'
+API_URL = 'https://pgorelease.nianticlabs.com/plfe/328/rpc'
 
 # TODO -> Hide errors: From ### 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -98,8 +98,8 @@ class Service:
         req = RequestEnvelope_pb2.RequestEnvelope(
                 status_code = 2,
                 request_id = api.get_RPC_ID(),
-                longitude = self.location.lon,
-                latitude = self.location.lat,
+                longitude = self.location.flon,
+                latitude = self.location.flat,
                 altitude = self.location.alt,
                 auth_ticket = self.authTicket,
                 unknown12 = 989,
@@ -151,7 +151,7 @@ class Service:
             try:
                 res = self.request(self.wrap_in_request(payload))
                 if res is not None:
-                    print(res)
+                    # print(res)
                     # self.parse_default(res)
                     #self.state.eggs.ParseFromString(res.returns[1])
                     #self.state.inventory.ParseFromString(res.returns[2])

@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='POGOProtos/Networking/Requests/Messages/UseItemCaptureMessage.proto',
   package='POGOProtos.Networking.Requests.Messages',
   syntax='proto3',
-  serialized_pb=_b('\nCPOGOProtos/Networking/Requests/Messages/UseItemCaptureMessage.proto\x12\'POGOProtos.Networking.Requests.Messages\x1a&POGOProtos/Inventory/Item/ItemId.proto\"{\n\x15UseItemCaptureMessage\x12\x32\n\x07item_id\x18\x01 \x01(\x0e\x32!.POGOProtos.Inventory.Item.ItemId\x12\x14\n\x0c\x65ncounter_id\x18\x02 \x01(\x06\x12\x18\n\x10spawn_point_guid\x18\x03 \x01(\tb\x06proto3')
+  serialized_pb=_b('\nCPOGOProtos/Networking/Requests/Messages/UseItemCaptureMessage.proto\x12\'POGOProtos.Networking.Requests.Messages\x1a&POGOProtos/Inventory/Item/ItemId.proto\"y\n\x15UseItemCaptureMessage\x12\x32\n\x07item_id\x18\x01 \x01(\x0e\x32!.POGOProtos.Inventory.Item.ItemId\x12\x14\n\x0c\x65ncounter_id\x18\x02 \x01(\x06\x12\x16\n\x0espawn_point_id\x18\x03 \x01(\tb\x06proto3')
   ,
   dependencies=[POGOProtos_dot_Inventory_dot_Item_dot_ItemId__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -50,7 +50,7 @@ _USEITEMCAPTUREMESSAGE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='spawn_point_guid', full_name='POGOProtos.Networking.Requests.Messages.UseItemCaptureMessage.spawn_point_guid', index=2,
+      name='spawn_point_id', full_name='POGOProtos.Networking.Requests.Messages.UseItemCaptureMessage.spawn_point_id', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -69,7 +69,7 @@ _USEITEMCAPTUREMESSAGE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=152,
-  serialized_end=275,
+  serialized_end=273,
 )
 
 _USEITEMCAPTUREMESSAGE.fields_by_name['item_id'].enum_type = POGOProtos_dot_Inventory_dot_Item_dot_ItemId__pb2._ITEMID
