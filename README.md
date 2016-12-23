@@ -1,13 +1,12 @@
+**This project is ceased now.**
+
 # Motivation
-1. I just wanna say that I hate my professor.
-2. I can't play Pokemon Go anymore.
-3. Friends ask me to hang out and battle for gym.
-4. Old friends want to play it in China.
 
 # Current problem
 
-1. I really don't have much time on this.
-2. Niantic modified API and it still not be hacked right now.
+1. Mila432 stoped API support due to some personal reason
+2. It's not interesting anymore.
+3. Mario Run sucks
 
 
 # Acknowledgement
